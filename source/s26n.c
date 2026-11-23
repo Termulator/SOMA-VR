@@ -9,6 +9,11 @@ typedef unsigned long long u64;
 typedef long long i64;
 typedef int i32;
 static u32 g_niInputMode,g_niInputConfigured;
+/* NI02: GAMEPAD mode only. 1 (default, original behaviour) = right-stick Look is yaw-only and the
+   headset alone owns pitch (decoupled pitch). 0 = the right stick also pitches the camera like a
+   normal flat-screen gamepad; the headset orientation is still composed on top of it.
+   Set live from script via VRINPUT/PITCH, persisted by the menu as SOMA_VR_Comfort/DecoupledPitch. */
+static u32 g_niDecoupledPitch=1;
 static void ni_install_mouse_focus(void);
 static i32 ni_native_input(void){return __atomic_load_n(&g_niInputMode,__ATOMIC_ACQUIRE)!=0;}
 #if defined(S26IU_TEST)
@@ -13358,6 +13363,13 @@ static u64 __attribute__((ms_abi)) h5730_run_global_detour(void* handler,H5730TS
     if(h5748t_sso_eq(objectName,"VRINPUT",7u)){
         if(h5748t_sso_eq(functionName,"GAMEPAD_AIM",11u))return g_niInputMode==2 && !g_s26nPhiRemote && h5755dg_gameplay_vr();
         if(h5748t_sso_eq(functionName,"NATIVE",6u))return ni_native_input();
+        if(h5748t_sso_eq(functionName,"GAMEPAD",7u))return g_niInputMode==2;
+        if(h5748t_sso_eq(className,"PITCH",5u)){
+            u32 decoupled=h5748t_sso_eq(functionName,"0",1u)?0u:1u;
+            if(__atomic_exchange_n(&g_niDecoupledPitch,decoupled,__ATOMIC_ACQ_REL)!=decoupled)
+                ext_Log(">>> NI02 GAMEPAD DECOUPLED PITCH %s: %s",decoupled?"ON":"OFF",decoupled?"right stick is yaw-only; headset owns pitch":"right stick pitches the camera; headset orientation is composed on top");
+            return 1;
+        }
         if(h5748t_sso_eq(functionName,"PSICONS",7u))return ni_native_input()&&niAutoPSIcons;
         if(h5748t_sso_eq(functionName,"PSREFRESH",9u)){niAutoPSIcons=ni_native_input()?ni_auto_ps_icons():0;return niAutoPSIcons;}
         if(h5748t_sso_eq(functionName,"ICONS",5u)){ni_prepare_icon_surface();return ni_native_input()&&g_niIconSet!=0;}
@@ -19210,9 +19222,11 @@ static void __attribute__((ms_abi)) h37a_global_player_analog_guard(void* player
         return;
     }
     /* Native interaction states have already consumed their drag/rotate input.
-       Only ordinary gamepad camera Look loses pitch; scripted remote cameras retain it. */
+       Only ordinary gamepad camera Look loses pitch (and only while DECOUPLED PITCH is ON);
+       scripted remote cameras retain it. */
     if(o_h37aGlobalPlayerAnalog && amount && analogId==H34_ANALOG_LOOK &&
-       g_niInputMode==2 && !g_s26nPhiRemote && h5755dg_gameplay_vr()){
+       g_niInputMode==2 && !g_s26nPhiRemote && h5755dg_gameplay_vr() &&
+       __atomic_load_n(&g_niDecoupledPitch,__ATOMIC_ACQUIRE)){
         float look[3]={amount[0],0.0f,amount[2]};
         o_h37aGlobalPlayerAnalog(playerIface,analogId,look);return;
     }

@@ -1,3 +1,12 @@
+# Unreleased - Gamepad pitch option
+
+- Adds **VR SETTINGS > CONTROLS > DECOUPLED PITCH** (visible only while INPUT MODE is GAMEPAD).
+  - ON (default, previous behaviour): right stick is yaw-only; the headset alone controls looking up/down.
+  - OFF: the right stick also pitches the camera like a normal gamepad. Headset orientation is still composed on top, so you can look around freely and aim with the stick.
+- The choice applies immediately (no restart) and is saved as `DecoupledPitch` under `[SOMA_VR_Comfort]` in user_settings.cfg.
+- Requires the rebuilt native DLL (`source/s26n.c`) together with the updated `script/modules/MenuHandler.hps`.
+- `tests/test_iz_gamepad.py` now covers both settings. Not yet validated in a headset.
+
 # 1.0.9-S26IT
 
 Removed temporary stutter recording controls, capture buffer and file writer. Preserves existing recordings and settings. No gameplay changes or claim of resolved stutters.

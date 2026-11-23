@@ -686,8 +686,8 @@
       "bytes": 32003
     },
     "script/modules/MenuHandler.hps": {
-      "sha256": "57d2071afbcdc0488fd5481172d2c6e42f612fd4f8df9a657a624d62d51c0e79",
-      "bytes": 329613
+      "sha256": "75be5797778e238adf306d0bc43cd738c48637811a2b373d518cd5b63745e491",
+      "bytes": 330659
     },
     "script/modules/PlayerEnergyHandler.hps": {
       "sha256": "7084751c162a38313c9dc3e4e02bebcd5779079cb956c439ed480942d51bc65f",
@@ -878,8 +878,8 @@
       "bytes": 1547
     },
     "SOMA_VR_FEATURES.md": {
-      "sha256": "70cfd0134dd86c6ae638780d1434a64d3eb67fe34a61abb21def5a41a11794d3",
-      "bytes": 14473
+      "sha256": "e0ac4563c170cdbaded6214a011997ea7f165eaf32eccca2da674104be2c2f86",
+      "bytes": 15196
     },
     "SOMA_VR_INSTALLATION.md": {
       "sha256": "55f93179f53eee0da289cc26b683d063c3d73b111bc81f2962c35dad66b3a93d",

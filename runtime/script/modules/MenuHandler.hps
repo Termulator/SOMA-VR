@@ -978,6 +978,7 @@ class cScrMenuHandler : iScrUserModule, iScrUserModule_Interface, iScrMenuHandle
 	void HPL3VR_RuntimeActiveOff() { gbHPL3VRRuntimeActive = false; cScript_RunGlobalFunc("VRMODE", "", "0"); }
 
     [nosave] int mlVRInputMode=0;
+    [nosave] bool mbVRDecoupledPitch=true;
     [nosave] float mfNIGlyphRefresh=0;
     [nosave] int mlVRInputTarget=0;
     [nosave] bool mbVRInputConfirm=false;
@@ -1106,6 +1107,8 @@ class cScrMenuHandler : iScrUserModule, iScrUserModule_Interface, iScrMenuHandle
         mlVRInputMode=cLux_GetUserConfig().GetInt("SOMA_VR_Comfort","InputMode",0);
         if(mlVRInputMode<0 || mlVRInputMode>2)mlVRInputMode=0;
         cScript_RunGlobalFunc("VRINPUT","MODE",""+mlVRInputMode);
+        mbVRDecoupledPitch=cLux_GetUserConfig().GetBool("SOMA_VR_Comfort","DecoupledPitch",true);
+        cScript_RunGlobalFunc("VRINPUT","PITCH",mbVRDecoupledPitch ? "1" : "0");
         cScript_RunGlobalFunc("VRINPUT","","PSREFRESH");
         { cConfigFile@ p=cLux_GetUserConfig();
             // One-time migration from the independent IU switch. Native preference is authoritative afterward.
@@ -1417,7 +1420,7 @@ class cScrMenuHandler : iScrUserModule, iScrUserModule_Interface, iScrMenuHandle
     {
         if(mlVRComfortCategory<0) return 5;
         if(mlVRComfortCategory==2) return 11;
-        if(mlVRComfortCategory==1) return cScript_RunGlobalFunc("VRINPUT","","NATIVE") ? 3 : 10;
+        if(mlVRComfortCategory==1) return cScript_RunGlobalFunc("VRINPUT","","NATIVE") ? (cScript_RunGlobalFunc("VRINPUT","","GAMEPAD") ? 4 : 3) : 10;
         if(mlVRComfortCategory==7) return 8;
         if(mlVRComfortCategory==0) return cScript_RunGlobalFunc("VRINPUT","","NATIVE") ? 5 : 15;
         if(mlVRComfortCategory==10)return 3;
@@ -1683,8 +1686,19 @@ class cScrMenuHandler : iScrUserModule, iScrUserModule_Interface, iScrMenuHandle
             int inputMode=HPL3VR_Multi("INPUT MODE",0,inputModes,mlVRInputMode);
             if(inputMode!=mlVRInputMode){mlVRInputTarget=inputMode;mbVRInputConfirm=true;msVRInputFocus="NO";msFocusNextFrame="NO";}
             if(cScript_RunGlobalFunc("VRINPUT","","NATIVE")){
-                HPL3VR_ResetLabel("Use SOMA's normal CONTROLS menu for bindings",1);
-                HPL3VR_ResetLabel("and mouse / gamepad sensitivity.",2);
+                if(cScript_RunGlobalFunc("VRINPUT","","GAMEPAD")){
+                    bool decoupled=HPL3VR_Toggle("DECOUPLED PITCH",1,mbVRDecoupledPitch);
+                    if(decoupled!=mbVRDecoupledPitch){
+                        mbVRDecoupledPitch=decoupled;
+                        cLux_GetUserConfig().SetBool("SOMA_VR_Comfort","DecoupledPitch",decoupled);cLux_GetUserConfig().Save();
+                        cScript_RunGlobalFunc("VRINPUT","PITCH",decoupled ? "1" : "0");
+                    }
+                    HPL3VR_ResetLabel("ON: head aims up/down. OFF: right stick also looks up/down.",2);
+                    HPL3VR_ResetLabel("Bindings and sensitivity: SOMA's normal CONTROLS menu.",3);
+                }else{
+                    HPL3VR_ResetLabel("Use SOMA's normal CONTROLS menu for bindings",1);
+                    HPL3VR_ResetLabel("and mouse / gamepad sensitivity.",2);
+                }
             }else{
             array<tString> modes={"SMOOTH","SNAP 30","SNAP 45","OFF"};
             OptionMenu_UpdateExtraButtonWidth_MultiSelection(modes,"");

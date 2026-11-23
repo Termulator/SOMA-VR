@@ -143,3 +143,9 @@ Removed the recall explanation and status text from GAMEPLAY. The RECALL OMNI-TO
 ## 1.1.0-S26IY options
 
 GAMEPLAY now offers INTERACTION GUIDES: OFF, HELD ITEMS or INVENTORY. INVENTORY includes nearby destinations for owned stowed items, subject to native permissions and scripted item order. Existing guide settings retain their previous behavior. STARTUP HELP controls the VR launch introduction and defaults to ON. The Climber bottom exit swipe panel accepts a small near-surface tolerance while retaining its story and busy restrictions.
+
+## Gamepad input and decoupled pitch
+
+INPUT MODE (VR SETTINGS > CONTROLS) can be set to GAMEPAD to play with SOMA's normal gamepad bindings; motion-controller interactions are inactive and the change takes effect after a restart. In this mode the headset renders the view and the stick/buttons follow the game's normal CONTROLS menu.
+
+DECOUPLED PITCH (GAMEPAD mode only): ON keeps the right stick yaw-only, so the headset alone owns up/down aim. OFF lets the right stick pitch the camera like a flat-screen gamepad, with the headset orientation added on top. The toggle is live, and stored as `DecoupledPitch` in `[SOMA_VR_Comfort]`. Interaction aiming (grab/use) follows the actual view direction in both settings.

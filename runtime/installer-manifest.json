@@ -1,6 +1,6 @@
 ﻿{
     "Files":  {
-                  "script/modules/MenuHandler.hps":  "57d2071afbcdc0488fd5481172d2c6e42f612fd4f8df9a657a624d62d51c0e79",
+                  "script/modules/MenuHandler.hps":  "75be5797778e238adf306d0bc43cd738c48637811a2b373d518cd5b63745e491",
                   "script/helpers/helper_player.hps":  "9c81d5a6e844c0b7f6960cc29bc5905ba590790fc84fead4209932deec752336",
                   "vr_audio_s/THIRDPARTY-SteamAudio.md":  "a95e143e7d2466e82a28d6680c7287d9fc7d772136c323ab538a6d24472e70f0",
                   "script/base/InputHandler.hps":  "72ea64e09203b0f8ececfb9f4da0c326583b959b1cd81466b210862db0a7fd52",
@@ -21,7 +21,7 @@
                   "maps/chapter00/00_00_intro/00_00_intro.hps":  "5a1dd1570fe7e62c1d0afd04f1e7524ca19f0566ce067fcc41039af9e30d2399",
                   "entities/station/special/02_07_power_pump/02_07_power_pump_button.ent":  "85262e750b9f23034316b83d3d322057b41bfbb42af97edff91bd36c5ed0f76d",
                   "script/player/Player.hps":  "56fc2afd989961ab3f2a9715a7d40d7eef1500ab3a7791faa569bd029b3c1f45",
-                  "SOMA_VR_FEATURES.md":  "70cfd0134dd86c6ae638780d1434a64d3eb67fe34a61abb21def5a41a11794d3",
+                  "SOMA_VR_FEATURES.md":  "e0ac4563c170cdbaded6214a011997ea7f165eaf32eccca2da674104be2c2f86",
                   "script/helpers/helper_vr_roomscale_hr.hps":  "e4e0c07bc5f07ff98fa9259e55005d5c920fe8eedfe67fba8aa68474573b8a4c",
                   "entities/station/terminals/computer_systemcontrol/computer_systemcontrol.ent":  "f45c118ff0bbfe7a8975c8816a229afdec607825e30bf3a3ecdc81469dde6df0",
                   "script/player/PlayerState_Interact.hps":  "63c911350246a7ea4a255f891c0b78ec9af7cc141cdefea577ec67f7552f1785",
